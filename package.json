@@ -1,0 +1,15 @@
+{
+  "name": "3d-portfolio-monorepo",
+  "version": "1.0.0",
+  "description": "Monorepo for Harsh Shroti's 3D Portfolio — frontend (Vite/React) + backend (Node/Express)",
+  "private": true,
+  "scripts": {
+    "dev":            "cd frontend && npm run dev",
+    "build":          "cd frontend && npm run build",
+    "dev:frontend":   "cd frontend && npm run dev",
+    "dev:backend":    "cd backend  && npm run dev",
+    "start:frontend": "cd frontend && npm run preview",
+    "start:backend":  "cd backend  && npm start",
+    "install:all":    "cd frontend && npm install && cd ../backend && npm install"
+  }
+}

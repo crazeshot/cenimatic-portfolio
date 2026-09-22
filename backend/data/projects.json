@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "title": "Data Analytics Dashboard",
+    "category": "Data Analysis",
+    "description": "Interactive dashboard built to visualize large datasets using Python and Power BI. Includes trend forecasting, KPI tracking, and automated report generation.",
+    "tags": ["Python", "Power BI", "Pandas", "Data Visualization"],
+    "year": 2025,
+    "status": "completed",
+    "featured": true,
+    "thumbnail": "/data_analysis.png"
+  },
+  {
+    "id": 2,
+    "title": "Cinematic Video Editing Reel",
+    "category": "Video Editing",
+    "description": "A curated showreel of cinematic edits, color grading sessions, and motion-graphic projects. Blending storytelling with visual design.",
+    "tags": ["Premiere Pro", "After Effects", "Color Grading", "Motion Graphics"],
+    "year": 2025,
+    "status": "completed",
+    "featured": true,
+    "thumbnail": "/editing_timeline.png"
+  },
+  {
+    "id": 3,
+    "title": "AI-Edited Portfolio Page",
+    "category": "Creative Technology",
+    "description": "Experimented with AI tools to assist in generating and refining visual content for portfolio presentation pages. Combined Generative AI with manual design.",
+    "tags": ["AI Tools", "Design", "Automation", "Content Creation"],
+    "year": 2026,
+    "status": "completed",
+    "featured": false,
+    "thumbnail": "/edited_page_ai.png"
+  },
+  {
+    "id": 4,
+    "title": "3D Cinematic Portfolio Website",
+    "category": "Web Development",
+    "description": "The very portfolio site you're viewing right now. Built with React, Three.js, Vite, Framer Motion, and GSAP to create a movie-style immersive experience.",
+    "tags": ["React", "Three.js", "GSAP", "Framer Motion", "Vite"],
+    "year": 2026,
+    "status": "in-progress",
+    "featured": true,
+    "thumbnail": "/creative_camera.png"
+  },
+  {
+    "id": 5,
+    "title": "Montage Data Analysis Project",
+    "category": "Data Analysis",
+    "description": "Analyzed and visualized social media content performance metrics to optimize video montage strategies for maximum reach and engagement.",
+    "tags": ["Data Analysis", "Social Media", "Python", "Visualization"],
+    "year": 2025,
+    "status": "completed",
+    "featured": false,
+    "thumbnail": "/montage_data.png"
+  }
+]
