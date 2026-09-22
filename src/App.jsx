@@ -9,18 +9,20 @@ import HeroReveal from './components/HeroReveal';
 import TrailerMontage from './components/TrailerMontage';
 import PhotoReel from './components/PhotoReel';
 import WorkShowcase from './components/WorkShowcase';
+import Certifications from './components/Certifications';
 import EndCredits from './components/EndCredits';
 import DirectorBay from './components/DirectorBay';
 
 // ── Nav Items ──────────────────────────────────────────────────────
 const NAV = [
-  { label: 'WELCOME',   key: 'sec2' },
-  { label: 'MONTAGE',   key: 'sec3' },
-  { label: 'WHO I AM',  key: 'sec4' },
-  { label: 'GALLERY',   key: 'sec5' },
-  { label: 'SHOWCASE',  key: 'sec6' },
-  { label: 'PORTFOLIO', key: 'sec7' },
-  { label: 'CONTACT',   key: 'sec8' },
+  { label: 'WELCOME',        key: 'sec2' },
+  { label: 'MONTAGE',        key: 'sec3' },
+  { label: 'WHO I AM',       key: 'sec4' },
+  { label: 'GALLERY',        key: 'sec5' },
+  { label: 'SHOWCASE',       key: 'sec6' },
+  { label: 'PORTFOLIO',      key: 'sec7' },
+  { label: 'CERTIFICATIONS', key: 'secCert' },
+  { label: 'CONTACT',        key: 'sec8' },
 ];
 
 // ── Cinematic Taglines component for Section 4 ──────────────────────
@@ -214,6 +216,7 @@ export default function App() {
     sec5: useRef(null),
     sec6: useRef(null),
     sec7: useRef(null),
+    secCert: useRef(null),
     sec8: useRef(null),
   };
 
@@ -223,17 +226,17 @@ export default function App() {
     const onScroll = () => {
       const y = window.scrollY, wh = window.innerHeight;
       const secList = Object.entries(refs).map(([key, ref]) => ({
-        id: parseInt(key.replace('sec', '')),
+        key,
         top: ref.current?.offsetTop ?? 0,
         h: ref.current?.offsetHeight ?? 0,
       }));
       const center = y + wh / 2;
-      let cur = 2;
+      let cur = 'sec2';
       for (const s of secList) {
-        if (center >= s.top && center <= s.top + s.h) { cur = s.id; break; }
+        if (center >= s.top && center <= s.top + s.h) { cur = s.key; break; }
       }
       setActiveSection(cur);
-      const cs = secList.find(s => s.id === cur);
+      const cs = secList.find(s => s.key === cur);
       if (cs) setScrollProgress(Math.max(0, Math.min(1, (y - cs.top) / Math.max(1, cs.h))));
     };
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -372,8 +375,7 @@ export default function App() {
             {/* ── Side Nav (desktop) ───────────────────────────── */}
             <nav className="fixed right-8 top-1/2 -translate-y-1/2 z-[800] hidden lg:flex flex-col gap-5">
               {NAV.map(({ label, key }) => {
-                const secId = parseInt(key.replace('sec', ''));
-                const active = activeSection === secId;
+                const active = activeSection === key || (typeof activeSection === 'number' && key === `sec${activeSection}`);
                 return (
                   <button
                     key={key}
@@ -467,7 +469,7 @@ export default function App() {
               className="w-full h-screen relative z-[60]"
             >
               <TrailerMontage 
-                isActive={activeSection === 3} 
+                isActive={activeSection === 'sec3' || activeSection === 3} 
                 images={images} 
                 onDirectorClick={() => {
                   try { audioManager.playImpact(); } catch (_) {}
@@ -501,7 +503,7 @@ export default function App() {
                     CURRENTLY PURSUING<br />BBA IN DATA ANALYTICS.
                   </h2>
                   <div className="w-12 h-[1px] bg-[#c9a84c55] mx-auto my-5" />
-                  <CinematicTaglines active={activeSection === 4} />
+                  <CinematicTaglines active={activeSection === 'sec4' || activeSection === 4} />
                   <p className="font-cinzel text-xs md:text-sm text-[#c9a84c88] tracking-[0.2em] italic">
                     "Also an editor who can't edit his own life."
                   </p>
@@ -552,6 +554,13 @@ export default function App() {
             ═══════════════════════════════════════════════════ */}
             <div ref={refs.sec7} className="relative z-[60]">
               <WorkShowcase images={images} />
+            </div>
+
+            {/* ═══════════════════════════════════════════════════
+                SECTION: CERTIFICATIONS — BLADE & LIGHTNING REVEAL
+            ═══════════════════════════════════════════════════ */}
+            <div ref={refs.secCert} className="relative z-[60]">
+              <Certifications />
             </div>
 
             {/* ═══════════════════════════════════════════════════

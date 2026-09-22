@@ -119,6 +119,104 @@ class CinematicAudioManager {
     o.start(now); o.stop(now + 0.06);
   }
 
+  /** Cinematic lightning strike with electric crackle and thunder rumble */
+  playLightning() {
+    if (this.isMuted) return;
+    const ctx = this._ensureContext();
+    const now = ctx.currentTime;
+
+    // 1. Electric crackle (high-frequency burst)
+    const bufLen = Math.floor(ctx.sampleRate * 0.35);
+    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufLen; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.08));
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = buf;
+    const crackFilter = ctx.createBiquadFilter();
+    crackFilter.type = 'bandpass';
+    crackFilter.frequency.setValueAtTime(2600, now);
+    crackFilter.Q.value = 4.0;
+    const crackGain = ctx.createGain();
+    crackGain.gain.setValueAtTime(0.65, now);
+    crackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    noise.connect(crackFilter);
+    crackFilter.connect(crackGain);
+    crackGain.connect(ctx.destination);
+    noise.start(now);
+
+    // 2. Thunder sub-boom
+    const osc = ctx.createOscillator();
+    const subGain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(130, now);
+    osc.frequency.exponentialRampToValueAtTime(32, now + 1.2);
+    const lowFilter = ctx.createBiquadFilter();
+    lowFilter.type = 'lowpass';
+    lowFilter.frequency.setValueAtTime(350, now);
+    lowFilter.frequency.exponentialRampToValueAtTime(45, now + 1.2);
+    subGain.gain.setValueAtTime(0.01, now);
+    subGain.gain.linearRampToValueAtTime(0.8, now + 0.03);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+    osc.connect(lowFilter);
+    lowFilter.connect(subGain);
+    subGain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 1.4);
+  }
+
+  /** Razor-sharp metallic sword slash with speed trail whoosh */
+  playSwordSlash() {
+    if (this.isMuted) return;
+    const ctx = this._ensureContext();
+    const now = ctx.currentTime;
+
+    // 1. Blade metallic ring & sweep
+    const blade1 = ctx.createOscillator();
+    const blade2 = ctx.createOscillator();
+    const bladeGain = ctx.createGain();
+    blade1.type = 'sine';
+    blade2.type = 'triangle';
+    blade1.frequency.setValueAtTime(3200, now);
+    blade1.frequency.exponentialRampToValueAtTime(550, now + 0.28);
+    blade2.frequency.setValueAtTime(3240, now);
+    blade2.frequency.exponentialRampToValueAtTime(560, now + 0.28);
+    bladeGain.gain.setValueAtTime(0.01, now);
+    bladeGain.gain.linearRampToValueAtTime(0.4, now + 0.02);
+    bladeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    blade1.connect(bladeGain);
+    blade2.connect(bladeGain);
+    bladeGain.connect(ctx.destination);
+    blade1.start(now);
+    blade2.start(now);
+    blade1.stop(now + 0.55);
+    blade2.stop(now + 0.55);
+
+    // 2. High-speed air slice whoosh
+    const whooshLen = Math.floor(ctx.sampleRate * 0.4);
+    const whooshBuf = ctx.createBuffer(1, whooshLen, ctx.sampleRate);
+    const whooshData = whooshBuf.getChannelData(0);
+    for (let i = 0; i < whooshLen; i++) {
+      whooshData[i] = Math.random() * 2 - 1;
+    }
+    const whooshSource = ctx.createBufferSource();
+    whooshSource.buffer = whooshBuf;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(3500, now);
+    filter.frequency.exponentialRampToValueAtTime(250, now + 0.35);
+    filter.Q.value = 5.0;
+    const whooshGain = ctx.createGain();
+    whooshGain.gain.setValueAtTime(0.001, now);
+    whooshGain.gain.linearRampToValueAtTime(0.5, now + 0.04);
+    whooshGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    whooshSource.connect(filter);
+    filter.connect(whooshGain);
+    whooshGain.connect(ctx.destination);
+    whooshSource.start(now);
+  }
+
   /** Constant ambient tension drone */
   startDrone() {
     const ctx = this._ensureContext();
