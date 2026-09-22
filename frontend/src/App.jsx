@@ -10,6 +10,7 @@ import TrailerMontage from './components/TrailerMontage';
 import PhotoReel from './components/PhotoReel';
 import WorkShowcase from './components/WorkShowcase';
 import Certifications from './components/Certifications';
+import CertificationsBay from './components/CertificationsBay';
 import EndCredits from './components/EndCredits';
 import DirectorBay from './components/DirectorBay';
 
@@ -155,6 +156,8 @@ export default function App() {
 
   const [studioOpen, setStudioOpen] = useState(false);
   const [directorBayOpen, setDirectorBayOpen] = useState(false);
+  const [certificationsBayOpen, setCertificationsBayOpen] = useState(false);
+  const [certificationsInitialIdx, setCertificationsInitialIdx] = useState(0);
   const [images, setImages] = useState({
     hero: '/harsh_hero_art.png',
     editing: '/edited_page_ai.png',
@@ -557,10 +560,15 @@ export default function App() {
             </div>
 
             {/* ═══════════════════════════════════════════════════
-                SECTION: CERTIFICATIONS — BLADE & LIGHTNING REVEAL
+                SECTION: CERTIFICATIONS — THE CERTIFICATIONS BAY
             ═══════════════════════════════════════════════════ */}
             <div ref={refs.secCert} className="relative z-[60]">
-              <Certifications />
+              <Certifications
+                onOpenBay={(idx = 0) => {
+                  setCertificationsInitialIdx(idx);
+                  setCertificationsBayOpen(true);
+                }}
+              />
             </div>
 
             {/* ═══════════════════════════════════════════════════
@@ -720,6 +728,16 @@ export default function App() {
       <AnimatePresence>
         {directorBayOpen && (
           <DirectorBay onClose={() => setDirectorBayOpen(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* ── Certifications Bay Modal (Metallic Cinematic Edition) ──── */}
+      <AnimatePresence>
+        {certificationsBayOpen && (
+          <CertificationsBay
+            initialIndex={certificationsInitialIdx}
+            onClose={() => setCertificationsBayOpen(false)}
+          />
         )}
       </AnimatePresence>
     </>
